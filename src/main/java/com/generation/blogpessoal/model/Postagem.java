@@ -23,7 +23,7 @@ public class Postagem {
 	private Long id;
 	
 	
-	/*@NotBlank | Só funciona com string | diz que não podemos deixar em branco e retorna uma mensagem
+	/*@NotBlank | Só funciona com string | diz que não podemos deixar em branco e retorna uma mensagem | Obrigatório
 	 *@Size | Define o tamanho minimo e tamanho máximo do campo do tipo String, Colocando o max definimos o tamanho máximo da coluna do BD*/
 	@NotBlank(message = "O atributo Título é obrigatório e não pode utilizar utilizar espaço em branco!!")
 	@Size(min = 5, max = 100, message = "O atributo título deve conter no mínimo 5 e no máximo 100 caracteres")
@@ -34,7 +34,7 @@ public class Postagem {
 	@Size(min = 10, max = 1000, message = "O atributo Texto deve conter no mínimo 10 e no máximo 1000 caracteres") //Define o tamanho minimo e tamanho máximo do campo do tipo String | Colocando o max definimos o tamanho máximo da coluna do BD
 	private String texto;
 	
-	@UpdateTimestamp //Muda a data toda vez que editamos a postagem | para marcar apenas a data de postagem devemos usar o CreateTimeTamp
+	@UpdateTimestamp //Muda a data toda vez que editamos a postagem | para marcar apenas a data de postagem devemos usar o CreateTimeTamp | Utiliza a data e hora do sistema
 	private LocalDateTime data;
 
 	
