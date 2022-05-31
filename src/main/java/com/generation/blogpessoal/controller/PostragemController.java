@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.generation.blogpessoal.model.Postagem;
 import com.generation.blogpessoal.repository.PostagemRepository;
+import com.generation.blogpessoal.repository.TemaRepository;
 
 
 	/*@RestController 	| Diz que essa é a camada de controller
@@ -33,6 +34,10 @@ public class PostragemController {
 		 * Transfere a responsabilidade da classe PostagemRepository para postagemRepository
 		 * Basicamente tira a responsabilidade da gente de criar os objetos e coloca a responsabilidade na classe
 		*/
+	
+	@Autowired
+	private TemaRepository temaRepository;
+	
 	@Autowired
 	private PostagemRepository postagemRepository;
 	
@@ -74,11 +79,19 @@ public class PostragemController {
 		/*SELECT * FROM	tb_postagens WHERE titulo LIKE "%titulo%"*/
 	}
 	
-	@PostMapping
+	/*@PostMapping
 	public ResponseEntity<Postagem> postPostagem (@Valid @RequestBody Postagem postagem){
 		return ResponseEntity.status(HttpStatus.CREATED).body(postagemRepository.save(postagem));	
 		
-	}
+	}*/
+	
+	@PostMapping
+	public ResponseEntity<Postagem> postPostagem (@Valid @RequestBody Postagem postagem){
+		if(temaRepository.existsById(postagem.getId()))
+			return ResponseEntity.status(HttpStatus.CREATED).body(postagemRepository.save(postagem));	
+		return ResponseEntity.badRequest().build();
+	}	
+	
 	@PutMapping
 	public ResponseEntity<Postagem> putPostagem (@Valid @RequestBody Postagem postagem){
 		if (postagem.getId() == null) 
