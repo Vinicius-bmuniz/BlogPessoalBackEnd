@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.generation.blogpessoal.model.Postagem;
@@ -30,8 +29,6 @@ import com.generation.blogpessoal.repository.PostagemRepository;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PostragemController {
 
-	
-		private static final HttpStatus HttpStatus. = null;
 		/*Injeção de dependencias | Inversão de controle
 		 * Transfere a responsabilidade da classe PostagemRepository para postagemRepository
 		 * Basicamente tira a responsabilidade da gente de criar os objetos e coloca a responsabilidade na classe
@@ -78,10 +75,10 @@ public class PostragemController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Postagem> postPostagem (@Valid @RequestBody Postagem postagem){ //@Valid | valida o objeto conforme definimos na classe postagem (model)
-		return ResponseEntity.status(HttpStatus.CREATED).body(postagemRepository.save(postagem)); //HttpStatus.CREATED | Retorna o status 201 (create) caso seja inserida na tabela
+	public ResponseEntity<Postagem> postPostagem (@Valid @RequestBody Postagem postagem){
+		return ResponseEntity.status(HttpStatus.CREATED).body(postagemRepository.save(postagem));	
+		
 	}
-	
 	@PutMapping
 	public ResponseEntity<Postagem> putPostagem (@Valid @RequestBody Postagem postagem){
 		if (postagem.getId() == null) 
@@ -91,18 +88,7 @@ public class PostragemController {
 				.orElse(ResponseEntity.notFound().build());
 	}
 	
-	/*@DeleteMapping("/{id}")
-	//@ResponseStatus //Irá retornar esse código quando executar o método
-	public void deletePostagem(@PathVariable long id) {
-		if (postagemRepository.existsById(id) == true) {
-			postagemRepository.deleteById(id);
-		}else {
-			ResponseEntity.status(HttpStatus.NO_CONTENT);
-		}
-	}*/
-	
 	@DeleteMapping("/{id}") 
-	@ResponseStatus
 	public ResponseEntity<?> deletaPostagem (@PathVariable long id){
 		return postagemRepository.findById(id)
 				.map(resposta -> {
@@ -111,33 +97,4 @@ public class PostragemController {
 				})
 				.orElse(ResponseEntity.notFound().build());
 	}
-	
-	
-	
-	//throw new ResponseStatusException(HttpStatus.NO_CONTENT);
-	
-	/*@DeleteMapping ("/{id}")
-	public ResponseEntity<Postagem> delPostagem (@PathVariable long id){
-		if (postagemRepository.existsById(id))
-			postagemRepository.deleteById(id)
-			return
-	}*/
-	
-	
-	/*existsById(Long id)
-	
-	Long count = allActors.stream()
-			  .filter(actor -> actor.isFrom(“São Paulo”))
-			  .count();
-	
-	
-	
-	@DeleteMapping("/{id}")
-	public void delete(@PathVariable long id) {
-		postagemRepository.existsById(id); {
-			postagemRepository.deleteById(id);
-		}
-		}*/
-	
-	
 }
