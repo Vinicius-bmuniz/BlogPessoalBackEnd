@@ -22,7 +22,7 @@ import com.generation.blogpessoal.repository.TemaRepository;
 
 @RestController
 @CrossOrigin (origins = "*", allowedHeaders = "*")
-@RequestMapping ("/tema")
+@RequestMapping ("/temas")
 public class TemaController {
 	
 	@Autowired
@@ -72,9 +72,5 @@ public class TemaController {
 						return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 				})
 				.orElse(ResponseEntity.notFound().build());
-	}
-	
-	
-	
-	
+	}	 
 }
