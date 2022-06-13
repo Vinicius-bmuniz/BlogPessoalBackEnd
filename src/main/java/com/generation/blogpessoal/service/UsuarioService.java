@@ -5,8 +5,10 @@ import java.util.Optional;
 
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.generation.blogpessoal.model.Usuario;
 import com.generation.blogpessoal.model.UsuarioLogin;
@@ -63,9 +65,11 @@ public class UsuarioService {
 			 * 								| O ID DA REQUISIÇÃO TEM QUE SER O MESMO DO ID QUE ESTAMOS ALTERANDO
 			 * 								| Isso para não deixarmos outros usuários alterarmos o cadastro de terceiros
 			 */
+
 			if((checarUsuario.isPresent()) && (checarUsuario.get().getId() != usuario.getId()))
-				return Optional.empty();//Verificar com o Professor como declarar um retorno diferente.
-										//Para podermos separar as respostas e não ser duas respostas iguais para erros diferentes
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário já existe!", null);
+					//Verificar com o Professor como declarar um retorno diferente.
+					//Para podermos separar as respostas e não ser duas respostas iguais para erros diferentes
 			
 				/* Se nas duas verificações acima derem FALSE, saira do laço e executara os comandos abaixo
 				 * usuario.setSenha | Primeiro iremos chamar o método setSenha da classe model Usuario
@@ -86,13 +90,11 @@ public class UsuarioService {
 		Optional<Usuario> usuario = usuarioRepository.findByUsuario(usuarioLogin.get().getUsuario());
 		if (usuario.isPresent()) {
 			if (compararSenhas(usuarioLogin.get().getSenha(), usuario.get().getSenha())) {
-				
 				usuarioLogin.get().setId(usuario.get().getId());
 				usuarioLogin.get().setNome(usuario.get().getNome());
 				usuarioLogin.get().setFoto(usuario.get().getFoto());
 				usuarioLogin.get().setToken(gerarBasicToken(usuarioLogin.get().getUsuario(), usuarioLogin.get().getSenha()));
 				usuarioLogin.get().setSenha(usuario.get().getSenha());
-
 				return usuarioLogin;
 			}
 		}
@@ -108,11 +110,10 @@ public class UsuarioService {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		return encoder.matches(senhaDigitada, senhaBanco);
 	}
-
+	
 	private String gerarBasicToken(String usuario, String senha) {
 		String token = usuario + ":" + senha;
 		byte[] tokenBase64 = Base64.encodeBase64(token.getBytes(Charset.forName("US-ASCII")));
 		return "Basic " + new String(tokenBase64);
 	}
-
 }

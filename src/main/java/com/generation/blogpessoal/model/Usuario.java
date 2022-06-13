@@ -42,6 +42,22 @@ public class Usuario {
 	@JsonIgnoreProperties("usuario")
 	private List<Postagem> postagem;
 
+	// Primeiro método Construtor | Para simularmos um objeto populado nos testes
+	public Usuario(Long id, String nome, String usuario, String senha, String foto) {
+		this.id = id;
+		this.nome = nome;
+		this.usuario = usuario;
+		this.senha = senha;
+		this.foto = foto;
+	}
+
+	// Segundo método Construtor | Para simularmos um objeto vazio nos testes 
+	// Podemos utilizar esse construtor vazio e popularmos com apenas os atributos que queremos testar
+	public Usuario() {	
+		
+	}
+	
+	
 	
 // ===== GETTERS AND SETTERS ATRIBUTOS ===== //	
 	public Long getId() {

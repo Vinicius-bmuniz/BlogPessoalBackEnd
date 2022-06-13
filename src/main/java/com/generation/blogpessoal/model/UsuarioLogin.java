@@ -15,6 +15,24 @@ public class UsuarioLogin {
 	private String token;
 
 	
+	// Primeiro método Construtor | Para simularmos um objeto populado nos testes
+
+	public UsuarioLogin (Long id, String nome, String usuario, String senha, String foto, String token) {
+		this.id = id;
+		this.nome = nome;
+		this.usuario = usuario;
+		this.senha = senha;
+		this.foto = foto;
+		this.token = token;
+	}
+
+	// Segundo método Construtor | Para simularmos um objeto vazio nos testes | 
+	// Podemos utilizar esse construtor vazio e popularmos com apenas os atributos que queremos testar
+	public UsuarioLogin() {	
+		
+	}
+	
+	
 //====== GETTERS AND SETTERS ===== //
 	public Long getId() {
 		return id;

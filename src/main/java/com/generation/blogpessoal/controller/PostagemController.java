@@ -74,7 +74,7 @@ public class PostagemController {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 	
-	//Put abaixo não estava verificando se o tema existe
+//Put abaixo não estava verificando se o tema existe
 	/*@PutMapping
 	public ResponseEntity<Postagem> putPostagem (@Valid @RequestBody Postagem postagem){
 		if (postagem.getId() == null) 
@@ -83,7 +83,6 @@ public class PostagemController {
 				.map(mensagem -> ResponseEntity.status(HttpStatus.OK).body(postagemRepository.save(postagem)))
 				.orElse(ResponseEntity.notFound().build());
 	}*/
-	
 	
 	@PutMapping
 	public ResponseEntity<Postagem> putPostagemm (@Valid @RequestBody Postagem postagem){
@@ -95,18 +94,7 @@ public class PostagemController {
 	}			
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	@DeleteMapping("/{id}") 
 	public ResponseEntity<?> deletaPostagem (@PathVariable long id){
 		return postagemRepository.findById(id)

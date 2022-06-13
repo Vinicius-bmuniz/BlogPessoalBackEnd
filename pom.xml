@@ -18,12 +18,14 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
-	<!-- Dependência Spring Security | implementar sistema de segurança-->
+	
+		<!-- Dependência Spring Security | implementar sistema de segurança -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
-	<!-- Dependência Commons Codec | Codigicar nosso token de acesso -->
+		
+		<!-- Dependência Commons Codec | Codigicar nosso token de acesso -->
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
@@ -56,11 +58,26 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+	
+	<!-- Dependência Banco de dados | DB em memória para testes -->
+		
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		<!-- Adicionamos a exclusion para informar que queremos somente a ultima versão do Junit -->
+			<exclusions>
+				<exclusion>
+					<groupId>org.junit.vintage</groupId>
+					<artifactId>junit-vintage-engine</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 	</dependencies>
