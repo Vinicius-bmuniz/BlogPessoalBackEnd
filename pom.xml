@@ -19,6 +19,12 @@
 	</properties>
 	<dependencies>
 	
+		<!-- Dependência Postgre SQL -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+		</dependency>
+	
 		<!-- Dependência Spring Docs | Implementa o Swagger para documentação -->
 		<dependency>
 			<groupId>org.springdoc</groupId>
