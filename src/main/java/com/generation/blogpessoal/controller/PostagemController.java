@@ -1,6 +1,7 @@
 package com.generation.blogpessoal.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -16,26 +17,18 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.generation.blogpessoal.model.Postagem;
+import com.generation.blogpessoal.model.Usuario;
 import com.generation.blogpessoal.repository.PostagemRepository;
 import com.generation.blogpessoal.repository.TemaRepository;
 import com.generation.blogpessoal.repository.UsuarioRepository;
-import com.generation.blogpessoal.service.UsuarioService;
 
-
-	/*@RestController 	| Diz que essa é a camada de controller
-	 *@RequestMapping 	| Diz o link da página
-	 *@CrossOrigin 		| O front end fica em servidor diferente do BackEnd, por isso temos que ter esse comando*/
 @RestController
 @RequestMapping ("/postagens")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PostagemController {
-
-		/*Injeção de dependencias | Inversão de controle
-		 * Transfere a responsabilidade da classe PostagemRepository para postagemRepository
-		 * Basicamente tira a responsabilidade da gente de criar os objetos e coloca a responsabilidade na classe
-		*/
 	
 	@Autowired
 	private TemaRepository temaRepository;
@@ -43,12 +36,8 @@ public class PostagemController {
 	@Autowired
 	private PostagemRepository postagemRepository;
 	
-	@Autowired
+	@Autowired 
 	private UsuarioRepository usuarioRepository;
-	
-	@Autowired
-	private UsuarioService usuarioService;
-	
 	
 	@GetMapping 
 	public ResponseEntity<List<Postagem>> getAll(){ 
@@ -69,34 +58,28 @@ public class PostagemController {
 	
 	@PostMapping
 	public ResponseEntity<Postagem> postPostagem (@Valid @RequestBody Postagem postagem){
-		if (temaRepository.existsById(postagem.getTema().getId())) 
-			return ResponseEntity.ok(postagemRepository.save(postagem));
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		Optional<Usuario> postPostagem = usuarioRepository.findById(postagem.getUsuario().getId());
+		if(postPostagem.isPresent()) {
+			return temaRepository.findById(postagem.getTema().getId())
+					.map(resp -> ResponseEntity.ok(postagemRepository.save(postagem)))
+					.orElseThrow (() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "O tema não existe", null));
+		}
+		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário não existe!", null);
 	}
 	
-//Put abaixo não estava verificando se o tema existe
-	/*@PutMapping
-	public ResponseEntity<Postagem> putPostagem (@Valid @RequestBody Postagem postagem){
-		if (postagem.getId() == null) 
-			return ResponseEntity.notFound().build();
-		return postagemRepository.findById(postagem.getId())
-				.map(mensagem -> ResponseEntity.status(HttpStatus.OK).body(postagemRepository.save(postagem)))
-				.orElse(ResponseEntity.notFound().build());
-	}*/
-	
 	@PutMapping
-	public ResponseEntity<Postagem> putPostagemm (@Valid @RequestBody Postagem postagem){
-			if (postagemRepository.existsById(postagem.getId())){
-				if (temaRepository.existsById(postagem.getTema().getId()))
-					return ResponseEntity.status(HttpStatus.OK)
-							.body(postagemRepository.save(postagem));
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-	}			
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+	public ResponseEntity<Postagem> putPostagem (@Valid @RequestBody Postagem postagem){
+		Optional<Usuario> putPostagem = usuarioRepository.findById(postagem.getUsuario().getId());
+		if (putPostagem.isPresent() && (postagemRepository.existsById(postagem.getId()))){
+			return temaRepository.findById(postagem.getTema().getId())
+					.map(resp -> ResponseEntity.status(HttpStatus.OK).body(postagemRepository.save(postagem)))
+					.orElseThrow (() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "O tema não existe", null));
+		}			
+		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O Usuário não existe!", null);
 	}
 
 	@DeleteMapping("/{id}") 
-	public ResponseEntity<?> deletaPostagem (@PathVariable long id){
+	public ResponseEntity<?> deletaPostagem (@PathVariable Long id){
 		return postagemRepository.findById(id)
 				.map(resposta -> {
 					postagemRepository.deleteById(id);

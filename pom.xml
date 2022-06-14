@@ -19,6 +19,13 @@
 	</properties>
 	<dependencies>
 	
+		<!-- Dependência Spring Docs | Implementa o Swagger para documentação -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.6.9</version>
+		</dependency>
+	
 		<!-- Dependência Spring Security | implementar sistema de segurança -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

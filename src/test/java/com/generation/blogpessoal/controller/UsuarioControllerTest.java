@@ -187,7 +187,7 @@ public class UsuarioControllerTest {
 	
 	@Test
 	@Order(8)
-	@DisplayName("Não deve lgar")
+	@DisplayName("Não deve logar")
 	public void naoDeveLogar() {
 		
 		//Criar o objeto usuário no DB
