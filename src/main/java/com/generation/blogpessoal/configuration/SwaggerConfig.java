@@ -22,13 +22,14 @@ public class SwaggerConfig {
 						.description("Projeto Blog Pessoal - Generation Brasil T53")
 						.version("v0.0.1")
 				.license(new License()
-						.name("Blog Pessoal - Generation Brasil")
+						.name("Generation Brasil")
 						.url("https://brazil.generation.org/"))
-				.contact(new Contact().name("Vinicius Barbosa")
+				.contact(new Contact()
+						.name("Vinicius Barbosa")
 						.url("https://github.com/Vinicius-bmuniz/")
 						.email("vinicius.bmunizz@gmail.com")))
 				.externalDocs(new ExternalDocumentation()
-						.description("GitHub")
+						.description("GitHub Blog Pessoal")
 						.url("https://github.com/Vinicius-bmuniz/blogpessoal"));
 	}
 
